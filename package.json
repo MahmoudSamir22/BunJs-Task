@@ -1,0 +1,22 @@
+{
+  "name": "backend-task",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "bun --watch index.ts",
+    "build": "bun build index.ts",
+    "start": "NODE_ENV=production bun index.ts",
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "prisma": "^5.7.1"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "elysia": "^0.8.6",
+    "mongoose": "^8.0.3"
+  }
+}
