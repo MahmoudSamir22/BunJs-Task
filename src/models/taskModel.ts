@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { TaskType } from "../types/taskType";
+import type { TaskType } from "../types/taskType";
 
 const taskSchema = new Schema<TaskType>({
   title: {
