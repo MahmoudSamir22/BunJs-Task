@@ -2,13 +2,16 @@ import { Elysia } from "elysia";
 import taskService from "../services/taskService";
 import type { TaskType } from "../types/taskType";
 import response from "../libs/response";
+import { taskModel } from "../validations/taskValidation";
+import type { CommonResponseType } from "../types/response.d.ts";
 
 export const taskController = (app: Elysia) =>
   app.group("/tasks", (router) =>
     router
+      .use(taskModel)
       .post(
         "/",
-        async ({ body, set }) => {
+        async ({ body, set }): Promise<CommonResponseType<TaskType>> => {
           const task = await taskService.createTask(body as TaskType);
           set.status = "Created";
           return response({
@@ -43,13 +46,15 @@ export const taskController = (app: Elysia) =>
               },
             },
           },
+          body: "createTask",
         }
       )
       .get(
         "/",
-        async () => {
+        async (): Promise<CommonResponseType<TaskType[]>> => {
           const tasks = await taskService.getTasks();
           return {
+            status: true,
             message: "Tasks retrieved",
             data: tasks,
           };
@@ -62,9 +67,10 @@ export const taskController = (app: Elysia) =>
       )
       .get(
         "/:id",
-        async ({ params }) => {
+        async ({ params }): Promise<CommonResponseType<TaskType>> => {
           const task = await taskService.getTask(params.id);
           return {
+            status: true,
             message: "Task retrieved",
             data: task,
           };
@@ -77,12 +83,13 @@ export const taskController = (app: Elysia) =>
       )
       .put(
         "/:id",
-        async ({ params, body }) => {
+        async ({ params, body }): Promise<CommonResponseType<TaskType>> => {
           const task = await taskService.updateTask(
             params.id,
             body as TaskType
           );
           return {
+            status: true,
             message: "Task updated",
             data: task,
           };
@@ -113,13 +120,15 @@ export const taskController = (app: Elysia) =>
               },
             },
           },
+          body: "updateTask",
         }
       )
       .delete(
         "/:id",
-        async ({ params }) => {
+        async ({ params }): Promise<CommonResponseType<TaskType>> => {
           const task = await taskService.deleteTask(params.id);
           return {
+            status: true,
             message: "Task deleted",
             data: task,
           };

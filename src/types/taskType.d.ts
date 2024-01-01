@@ -1,8 +1,6 @@
 export type TaskType = {
   title: string;
   description?: string;
-  isFinished?: boolean;
-  due_date?: Date;
 };
 
 export const TaskSchema = {
@@ -13,10 +11,6 @@ export const TaskSchema = {
     },
     description: {
       type: "string",
-    },
-    due_date: {
-      type: "string",
-      format: "date",
     },
   },
   required: ["title"],

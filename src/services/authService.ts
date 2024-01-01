@@ -1,20 +1,28 @@
 import User from "../models/userModel";
-import type { UserType, LoginType } from "../types/userType";
-// import {signToken} from "../libs/jwt";
+import type { UserType, LoginType, SignUpType } from "../types/userType";
+import ApiError from "../libs/apiError";
 
 class AuthService {
-  async signUp(data: UserType) {
+
+  async signUp(data: SignUpType): Promise<UserType> {
+    const existedUser = await this.findUserByEmail(data.email);
+    if(existedUser) throw new Error("Email already exists");
     const user = new User(data);
     // Triger Mongoose middleware to hash password
     await user.save();
     return user;
   }
-  async login(data: LoginType) {
-    const user = await User.findOne({ email: data.email });
+
+  async login(data: LoginType): Promise<UserType> {
+    const user = await this.findUserByEmail(data.email);
     if (!user || !await Bun.password.verify(data.password, user.password)) {
-      throw new Error("Invalid credentials");
+      throw new ApiError("Invalid credentials", "Unauthorized");
     }
     return user
+  }
+
+  async findUserByEmail(email: string): Promise<UserType | null>{
+    return await User.findOne({ email });
   }
 }
 

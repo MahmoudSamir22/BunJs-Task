@@ -3,14 +3,14 @@ import response from "../libs/response";
 import authServices from "../services/authService";
 import type { UserType, LoginType } from "../types/userType";
 import { jwt } from "@elysiajs/jwt";
-import authMiddleware from "../middlewares/authMiddleware";
+import type { CommonResponseType } from "../types/response.d.ts";
 
 export const authController = (app: Elysia) =>
   app.group("/auth", (router) =>
     router
       .post(
         "/signup",
-        async ({ body, set }) => {
+        async ({ body, set }):Promise<CommonResponseType<UserType>> => {
           const user = await authServices.signUp(body as UserType);
           set.status = "Created";
           return response({
@@ -91,6 +91,4 @@ export const authController = (app: Elysia) =>
           },
         }
       )
-      .use(authMiddleware)
-      .get("/me", async ({ user }) => user)
   );

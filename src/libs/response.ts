@@ -1,6 +1,6 @@
-import {Elysia} from "elysia";
+import type {CommonResponseType} from "../types/response.d.ts";
 
-const response = (data:any) => {
+const response = (data:CommonResponseType<any>) => {
     return {
         status: data.status,
         message: data.message,

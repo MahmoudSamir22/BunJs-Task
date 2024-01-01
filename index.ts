@@ -29,7 +29,13 @@ app
     })
   )
   .use(taskController)
-  .use(authController);
+  .use(authController)
+  .onError(({ error, code, set }) => {
+    return {
+      status: false,
+      message: error.message,
+    };
+  });
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

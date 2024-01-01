@@ -1,4 +1,15 @@
+import type { ObjectId } from "mongoose";
+
 export type UserType = {
+  _id: ObjectId;
+  name: string;
+  email: string;
+  password: string;
+  avatar?: string;
+  role: string;
+};
+
+export type SignUpType = {
   name: string;
   email: string;
   password: string;
@@ -7,6 +18,6 @@ export type UserType = {
 };
 
 export type LoginType = {
-    email: string;
-    password: string;
-}
+  email: string;
+  password: string;
+};

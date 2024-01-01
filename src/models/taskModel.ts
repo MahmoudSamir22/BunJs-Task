@@ -8,14 +8,7 @@ const taskSchema = new Schema<TaskType>({
   },
   description: {
     type: String
-  },
-  isFinished: {
-    type: Boolean,
-    default: false,
-  },
-  due_date: {
-    type: Date,
-  },
+  }
 });
 
 const Task = model("Task", taskSchema);

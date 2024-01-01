@@ -1,6 +1,5 @@
 import { Elysia } from "elysia";
 import { jwt } from "@elysiajs/jwt";
-import type { Payload } from "../types/jwt";
 import User from "../models/userModel";
 
 const authMiddleware = (app: Elysia) =>
@@ -11,13 +10,27 @@ const authMiddleware = (app: Elysia) =>
         secret: process.env.JWT_SECRET!,
       })
     )
-    .derive(async ({ headers, jwt }) => {
+    .derive(async ({ headers, jwt, set }) => {
       let token = headers.authorization?.replace("Bearer ", "");
-      if (!token) throw new Error("Token not privided");
+      if (!token) {
+        set.status = 400;
+        throw new Error("No token provided");
+      }
       const decoded = await jwt.verify(token);
-      if (!decoded) throw new Error("Invalid token");
+      if (!decoded) {
+        set.status = 400;
+        throw new Error("Invalid token");
+      }
       const user = await User.findById((decoded as any).id);
-      return { user };
+      if (!user) {
+        set.status = 404;
+        throw new Error("User not found");
+      }
+      const userData = {
+        userId: user._id,
+        role: user.role,
+      };
+      return { user: userData };
     });
 
 export default authMiddleware;
