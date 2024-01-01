@@ -11,7 +11,7 @@ class AuthService {
     const user = new User(data);
     // Triger Mongoose middleware to hash password
     await user.save();
-    const {password, ...rest} = user;
+    const {password, ...rest} = user.toObject();
     return rest;
   }
 
@@ -20,7 +20,7 @@ class AuthService {
     if (!user || !await Bun.password.verify(data.password, user.password)) {
       throw new ApiError("Invalid credentials", "Unauthorized");
     }
-    const {password, ...rest} = user;
+    const {password, ...rest} = user.toObject();
     return rest
   }
 
