@@ -5,19 +5,12 @@ export type UserType = {
   name: string;
   email: string;
   password: string;
-  avatar?: string;
   role: string;
 };
 
-export type SignUpType = {
+export type UserProfile = {
+  _id: ObjectId;
   name: string;
   email: string;
-  password: string;
-  avatar?: string;
   role: string;
-};
-
-export type LoginType = {
-  email: string;
-  password: string;
-};
+}

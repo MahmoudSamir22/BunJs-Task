@@ -14,9 +14,6 @@ const userSchema = new Schema<UserType>({
     type: String,
     required: true,
   },
-  avatar: {
-    type: String,
-  },
   role: {
     type: String,
     default: "user",

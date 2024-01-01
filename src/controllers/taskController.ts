@@ -1,14 +1,16 @@
 import { Elysia } from "elysia";
 import taskService from "../services/taskService";
-import type { TaskType } from "../types/taskType";
 import response from "../libs/response";
 import { taskModel } from "../validations/taskValidation";
+import authMiddleware from "../middlewares/authMiddleware.ts";
+import type { TaskType } from "../types/taskType";
 import type { CommonResponseType } from "../types/response.d.ts";
 
 export const taskController = (app: Elysia) =>
   app.group("/tasks", (router) =>
     router
       .use(taskModel)
+      .use(authMiddleware)
       .post(
         "/",
         async ({ body, set }): Promise<CommonResponseType<TaskType>> => {
@@ -23,28 +25,11 @@ export const taskController = (app: Elysia) =>
         {
           detail: {
             tags: ["Tasks"],
-            requestBody: {
-              content: {
-                "application/json": {
-                  schema: {
-                    type: "object",
-                    properties: {
-                      title: {
-                        type: "string",
-                      },
-                      description: {
-                        type: "string",
-                      },
-                      due_date: {
-                        type: "string",
-                        format: "date",
-                      },
-                    },
-                    required: ["title"],
-                  },
-                },
+            security: [
+              {
+                bearerAuth: [],
               },
-            },
+            ],
           },
           body: "createTask",
         }
@@ -62,6 +47,11 @@ export const taskController = (app: Elysia) =>
         {
           detail: {
             tags: ["Tasks"],
+            security: [
+              {
+                bearerAuth: [],
+              },
+            ],
           },
         }
       )
@@ -78,6 +68,11 @@ export const taskController = (app: Elysia) =>
         {
           detail: {
             tags: ["Tasks"],
+            security: [
+              {
+                bearerAuth: [],
+              },
+            ],
           },
         }
       )
@@ -97,28 +92,11 @@ export const taskController = (app: Elysia) =>
         {
           detail: {
             tags: ["Tasks"],
-            requestBody: {
-              content: {
-                "application/json": {
-                  schema: {
-                    type: "object",
-                    properties: {
-                      title: {
-                        type: "string",
-                      },
-                      description: {
-                        type: "string",
-                      },
-                      due_date: {
-                        type: "string",
-                        format: "date",
-                      },
-                    },
-                    required: ["title"],
-                  },
-                },
+            security: [
+              {
+                bearerAuth: [],
               },
-            },
+            ],
           },
           body: "updateTask",
         }
@@ -136,6 +114,11 @@ export const taskController = (app: Elysia) =>
         {
           detail: {
             tags: ["Tasks"],
+            security: [
+              {
+                bearerAuth: [],
+              },
+            ],
           },
         }
       )
