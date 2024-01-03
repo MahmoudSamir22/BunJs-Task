@@ -20,12 +20,12 @@ class AuthService {
     if (!user || !await Bun.password.verify(data.password, user.password)) {
       throw new ApiError("Invalid credentials", "Unauthorized");
     }
-    const {password, ...rest} = user.toObject();
+    const {password, ...rest} = user;
     return rest
   }
 
   async findUserByEmail(email: string): Promise<UserType | null>{
-    return await User.findOne({ email });
+    return await User.findOne({ email }).lean();
   }
 }
 
